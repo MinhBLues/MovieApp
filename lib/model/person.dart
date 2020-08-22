@@ -8,7 +8,7 @@ class Person {
   Person(this.id, this.popularity, this.name, this.profileImag, this.known);
   Person.fromJSON(Map<String, dynamic> json)
       : id = json["id"],
-        popularity = json["popularity"],
+        popularity = json["popularity"].toDouble(),
         name = json["name"],
         profileImag = json["profile_path"],
         known = json["known_for_department"];

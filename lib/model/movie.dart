@@ -5,13 +5,13 @@ class Movie {
   final String backPoster;
   final String poster;
   final String overview;
-  final String rating;
+  final double rating;
 
   Movie(this.id, this.popularity, this.title, this.backPoster, this.poster,
       this.overview, this.rating);
   Movie.fromJSON(Map<String, dynamic> json)
       : id = json["id"],
-        popularity = json["popularity"],
+        popularity = json["popularity"].toDouble(),
         title = json["title"],
         backPoster = json["backdrop_path"],
         poster = json["poster_path"],

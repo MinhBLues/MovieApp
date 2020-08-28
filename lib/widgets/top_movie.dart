@@ -1,44 +1,58 @@
-import 'package:MovieApp/bloc/get_movie_byGenre_bloc.dart';
+import 'package:MovieApp/bloc/get_movies_bloc.dart';
 import 'package:MovieApp/model/movie.dart';
 import 'package:MovieApp/model/movie_response.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:MovieApp/style/theme.dart' as Style;
+import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class GenreMovies extends StatefulWidget {
-  final int genreId;
-  GenreMovies({Key key, @required this.genreId}) : super(key: key);
+class TopMovies extends StatefulWidget {
   @override
-  _GenreMoviesState createState() => _GenreMoviesState(genreId);
+  _TopMoviesState createState() => _TopMoviesState();
 }
 
-class _GenreMoviesState extends State<GenreMovies> {
-  final int genreId;
-  _GenreMoviesState(this.genreId);
-
+class _TopMoviesState extends State<TopMovies> {
   @override
   void initState() {
     super.initState();
-    moviesByGenreBloc..getMoviesByGenre(genreId);
+    moviesBloc..getMovies();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<MovieResponse>(
-      stream: moviesByGenreBloc.subject.stream,
-      builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
-          return _buildMoivesByGenreWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error);
-        } else {
-          return _buildLoadingWidget();
-        }
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 10.0, top: 10.0),
+          child: Text("TOP RATED MOVIES",
+              style: TextStyle(
+                color: Style.Colors.titleColor,
+                fontWeight: FontWeight.w500,
+                fontSize: 12.0,
+              )),
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        StreamBuilder<MovieResponse>(
+          stream: moviesBloc.subject.stream,
+          builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data.error != null &&
+                  snapshot.data.error.length > 0) {
+                return _buildErrorWidget(snapshot.data.error);
+              }
+              return _buildMoviesWidget(snapshot.data);
+            } else if (snapshot.hasError) {
+              return _buildErrorWidget(snapshot.error);
+            } else {
+              return _buildLoadingWidget();
+            }
+          },
+        )
+      ],
     );
   }
 
@@ -66,7 +80,7 @@ class _GenreMoviesState extends State<GenreMovies> {
     );
   }
 
-  Widget _buildMoivesByGenreWidget(MovieResponse data) {
+  Widget _buildMoviesWidget(MovieResponse data) {
     List<Movie> movies = data.movies;
     if (movies.length == 0) {
       return Container(
@@ -93,15 +107,13 @@ class _GenreMoviesState extends State<GenreMovies> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(2.0)),
                               shape: BoxShape.rectangle),
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  EvaIcons.filmOutline,
-                                  color: Colors.white,
-                                  size: 50.0,
-                                )
-                              ]),
+                          child: Column(children: <Widget>[
+                            Icon(
+                              EvaIcons.filmOutline,
+                              color: Colors.white,
+                              size: 50.0,
+                            )
+                          ]),
                         )
                       : Container(
                           width: 120.0,

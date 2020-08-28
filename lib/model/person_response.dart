@@ -5,7 +5,7 @@ class PersonResponse {
   final String error;
   PersonResponse(this.persons, this.error);
   PersonResponse.fromJSON(Map<String, dynamic> json)
-      : persons = (json["result"] as List)
+      : persons = (json["results"] as List)
             .map((e) => new Person.fromJSON(e))
             .toList(),
         error = "";

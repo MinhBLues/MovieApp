@@ -1,23 +1,35 @@
-import 'package:MovieApp/bloc/get_movies_bloc.dart';
+import 'package:MovieApp/bloc/get_similar_movie_bloc.dart';
 import 'package:MovieApp/model/movie.dart';
 import 'package:MovieApp/model/movie_response.dart';
 import 'package:MovieApp/screens/detail_screen.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:MovieApp/style/theme.dart' as Style;
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:MovieApp/style/theme.dart' as Style;
 
-class TopMovies extends StatefulWidget {
+class SimilarMovies extends StatefulWidget {
+  final int id;
+
+  const SimilarMovies({Key key, this.id}) : super(key: key);
+
   @override
-  _TopMoviesState createState() => _TopMoviesState();
+  _SimilarMoviesState createState() => _SimilarMoviesState(id);
 }
 
-class _TopMoviesState extends State<TopMovies> {
+class _SimilarMoviesState extends State<SimilarMovies> {
+  final int id;
+
+  _SimilarMoviesState(this.id);
   @override
   void initState() {
     super.initState();
-    moviesBloc..getMovies();
+    movieSimilarBloc..getMovies(id);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    movieSimilarBloc..drainStreams();
   }
 
   @override
@@ -27,7 +39,7 @@ class _TopMoviesState extends State<TopMovies> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 10.0, top: 10.0),
-          child: Text("Những bộ phim kinh điển",
+          child: Text("Cùng thể loại",
               style: TextStyle(
                 color: Style.Colors.titleColor,
                 fontWeight: FontWeight.w500,
@@ -38,7 +50,7 @@ class _TopMoviesState extends State<TopMovies> {
           height: 5.0,
         ),
         StreamBuilder<MovieResponse>(
-          stream: moviesBloc.subject.stream,
+          stream: movieSimilarBloc.subject.stream,
           builder: (context, AsyncSnapshot<MovieResponse> snapshot) {
             if (snapshot.hasData) {
               if (snapshot.data.error != null &&
@@ -85,7 +97,7 @@ class _TopMoviesState extends State<TopMovies> {
     List<Movie> movies = data.movies;
     if (movies.length == 0) {
       return Container(
-        child: Text("No movies"),
+        // child: Text("No movies"),
       );
     } else {
       return Container(

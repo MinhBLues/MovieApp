@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Style.Colors.mainColor,
         centerTitle: true,
         leading: Icon(EvaIcons.menu2Outline, color:Colors.white),
-        title:Text("Movie App"),
+        title:Image.asset('assets/title.png', fit: BoxFit.cover),
         actions:<Widget>[
           IconButton(icon: Icon(EvaIcons.searchOutline, color:Colors.white,), onPressed: null)
         ],

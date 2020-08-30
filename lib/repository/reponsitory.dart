@@ -1,10 +1,14 @@
+import 'package:MovieApp/model/cast_response.dart';
 import 'package:MovieApp/model/genre_response.dart';
+import 'package:MovieApp/model/movie_detail_response.dart';
 import 'package:MovieApp/model/movie_response.dart';
 import 'package:MovieApp/model/person_response.dart';
+import 'package:MovieApp/model/video_response.dart';
 import 'package:dio/dio.dart';
 
 class MovieRepository {
   final String apikey = "334a95c5c0a0bd16d17bd835ab69a5ef";
+  final language = "vi-Vietnamese";
   static String mainUrl = "https://api.themoviedb.org/3";
   final Dio _dio = Dio();
   var getPopularUrl = '$mainUrl/movie/top_rated';
@@ -12,9 +16,10 @@ class MovieRepository {
   var getPlayingUrl = '$mainUrl/movie/now_playing';
   var getGenresUrl = '$mainUrl/genre/movie/list';
   var getPersonsUrl = '$mainUrl/person/popular';
+  var getMovieDetailUrl = '$mainUrl/movie';
 
   Future<MovieResponse> getMovies() async {
-    var params = {"api_key": apikey, "language": "vi-Vietnamese", "page": 1};
+    var params = {"api_key": apikey, "language": language, "page": 1};
 
     try {
       Response response =
@@ -27,7 +32,7 @@ class MovieRepository {
   }
 
   Future<MovieResponse> getPlayingMovies() async {
-    var params = {"api_key": apikey, "language": "vi-Vietnamese", "page:": 1};
+    var params = {"api_key": apikey, "language": language, "page:": 1};
 
     try {
       Response response =
@@ -40,7 +45,7 @@ class MovieRepository {
   }
 
   Future<GenreResponse> getGenres() async {
-    var params = {"api_key": apikey, "language": "vi-Vietnamese", "page:": 1};
+    var params = {"api_key": apikey, "language": language, "page:": 1};
 
     try {
       Response response = await _dio.get(getGenresUrl, queryParameters: params);
@@ -52,7 +57,7 @@ class MovieRepository {
   }
 
   Future<PersonResponse> getPersons() async {
-    var params = {"api_key": apikey, "language": "vi-Vietnamese", "page:": 1};
+    var params = {"api_key": apikey, "language": language, "page:": 1};
     try {
       Response response =
           await _dio.get(getPersonsUrl, queryParameters: params);
@@ -66,7 +71,7 @@ class MovieRepository {
   Future<MovieResponse> getMovieByGender(int id) async {
     var params = {
       "api_key": apikey,
-      "language": "vi-Vietnamese",
+      "language": language,
       "page:": 1,
       "with_genres": id
     };
@@ -76,6 +81,56 @@ class MovieRepository {
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
       return MovieResponse.withError("$error");
+    }
+  }
+
+  Future<MovieDetailResponse> getMovieDetail(int id) async {
+    var params = {"api_key": apikey, "language": language};
+    try {
+      Response response =
+          await _dio.get(getMovieDetailUrl + "/$id", queryParameters: params);
+      return MovieDetailResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return MovieDetailResponse.withError("$error");
+    }
+  }
+
+  Future<CastResponse> getCasts(int id) async {
+    var params = {"api_key": apikey, "language": language};
+    try {
+      Response response = await _dio.get(
+          getMovieDetailUrl + "/$id" + "/credits",
+          queryParameters: params);
+      return CastResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return CastResponse.withError("$error");
+    }
+  }
+
+  Future<MovieResponse> getSimilarMovies(int id) async {
+    var params = {"api_key": apikey, "language": language};
+    try {
+      Response response = await _dio.get(
+          getMovieDetailUrl + "/$id" + "/similar",
+          queryParameters: params);
+      return MovieResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return MovieResponse.withError("$error");
+    }
+  }
+
+  Future<VideoResponse> getMovieVideos(int id) async {
+    var params = {"api_key": apikey, "language": language};
+    try {
+      Response response = await _dio.get(getMovieDetailUrl + "/$id" + "/videos",
+          queryParameters: params);
+      return VideoResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return VideoResponse.withError("$error");
     }
   }
 }

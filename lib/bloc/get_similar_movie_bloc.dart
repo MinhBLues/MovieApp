@@ -3,13 +3,13 @@ import 'package:MovieApp/repository/reponsitory.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
-class MoviesListByGenreBloc {
+class MovieSimilarBloc {
   final MovieRepository _repository = MovieRepository();
   final BehaviorSubject<MovieResponse> _subject =
       BehaviorSubject<MovieResponse>();
 
-  getMoviesByGenre(int id) async {
-    MovieResponse response = await _repository.getMovieByGender(id);
+  getMovies(int id) async {
+    MovieResponse response = await _repository.getSimilarMovies(id);
     _subject.sink.add(response);
   }
 
@@ -18,7 +18,7 @@ class MoviesListByGenreBloc {
   }
 
   @mustCallSuper
-  dispose() async {
+  void dispose() async {
     await _subject.drain();
     _subject.close();
   }
@@ -26,4 +26,4 @@ class MoviesListByGenreBloc {
   BehaviorSubject<MovieResponse> get subject => _subject;
 }
 
-final moviesByGenreBloc = MoviesListByGenreBloc();
+final movieSimilarBloc = MovieSimilarBloc();

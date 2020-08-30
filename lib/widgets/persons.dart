@@ -24,7 +24,7 @@ class _PersonsListState extends State<PersonsList> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: 10.0, top: 10.0),
-          child: Text("TRENDING PERSONS ON THIS WEEK",
+          child: Text("Diễn viên hot trong tuần",
               style: TextStyle(
                 color: Style.Colors.titleColor,
                 fontWeight: FontWeight.w500,

@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Style.Colors.mainColor,
         centerTitle: true,
         leading: Icon(EvaIcons.menu2Outline, color:Colors.white),
-        title:Image.asset('assets/title.png', fit: BoxFit.cover),
+        title:Text("TMDB"),
         actions:<Widget>[
           IconButton(icon: Icon(EvaIcons.searchOutline, color:Colors.white,), onPressed: null)
         ],

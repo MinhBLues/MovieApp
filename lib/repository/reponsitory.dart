@@ -2,6 +2,7 @@ import 'package:MovieApp/model/cast_response.dart';
 import 'package:MovieApp/model/genre_response.dart';
 import 'package:MovieApp/model/movie_detail_response.dart';
 import 'package:MovieApp/model/movie_response.dart';
+import 'package:MovieApp/model/person/person_image_response.dart';
 import 'package:MovieApp/model/person_response.dart';
 import 'package:MovieApp/model/video_response.dart';
 import 'package:dio/dio.dart';
@@ -15,7 +16,7 @@ class MovieRepository {
   var getMoviesUrl = '$mainUrl/discover/movie';
   var getPlayingUrl = '$mainUrl/movie/now_playing';
   var getGenresUrl = '$mainUrl/genre/movie/list';
-  var getPersonsUrl = '$mainUrl/person/popular';
+  var getPersonsUrl = '$mainUrl/person';
   var getMovieDetailUrl = '$mainUrl/movie';
 
   Future<MovieResponse> getMovies() async {
@@ -60,7 +61,7 @@ class MovieRepository {
     var params = {"api_key": apikey, "language": language, "page:": 1};
     try {
       Response response =
-          await _dio.get(getPersonsUrl, queryParameters: params);
+          await _dio.get(getPersonsUrl + "/popular", queryParameters: params);
       return PersonResponse.fromJSON(response.data);
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
@@ -131,6 +132,18 @@ class MovieRepository {
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
       return VideoResponse.withError("$error");
+    }
+  }
+
+  Future<PersonImageResponse> getPersonImage(int id) async {
+    var params = {"api_key": apikey};
+    try {
+      Response response = await _dio.get(getPersonsUrl + "/$id" + "/images",
+          queryParameters: params);
+      return PersonImageResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return PersonImageResponse.withError("$error");
     }
   }
 }

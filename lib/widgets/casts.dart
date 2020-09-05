@@ -1,6 +1,7 @@
 import 'package:MovieApp/bloc/get_casts_bloc.dart';
 import 'package:MovieApp/model/cast.dart';
 import 'package:MovieApp/model/cast_response.dart';
+import 'package:MovieApp/screens/detail_person_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:MovieApp/style/theme.dart' as Style;
 
@@ -102,7 +103,13 @@ class _CastsState extends State<Casts> {
             padding: EdgeInsets.only(top: 10.0, right: 10.0),
             width: 100.0,
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PersonDetailScreen(id: casts[index].personId)));
+              },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[

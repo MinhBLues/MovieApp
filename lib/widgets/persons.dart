@@ -1,6 +1,7 @@
 import 'package:MovieApp/bloc/get_person_bloc.dart';
 import 'package:MovieApp/model/person.dart';
 import 'package:MovieApp/model/person_response.dart';
+import 'package:MovieApp/screens/detail_person_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:MovieApp/style/theme.dart' as Style;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -90,54 +91,63 @@ class _PersonsListState extends State<PersonsList> {
           return Container(
             width: 100.0,
             padding: EdgeInsets.only(top: 10.0, right: 8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                persons[index].profileImg == null
-                    ? Container(
-                        width: 70.0,
-                        height: 70.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Style.Colors.secondColor,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            PersonDetailScreen(id: persons[index].id)));
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  persons[index].profileImg == null
+                      ? Container(
+                          width: 70.0,
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Style.Colors.secondColor,
+                          ),
+                          child: Icon(
+                            FontAwesomeIcons.userAlt,
+                            color: Colors.white,
+                          ))
+                      : Container(
+                          width: 70.0,
+                          height: 70.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    "https://image.tmdb.org/t/p/w200/" +
+                                        persons[index].profileImg),
+                                fit: BoxFit.cover),
+                          ),
                         ),
-                        child: Icon(
-                          FontAwesomeIcons.userAlt,
-                          color: Colors.white,
-                        ))
-                    : Container(
-                        width: 70.0,
-                        height: 70.0,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  "https://image.tmdb.org/t/p/w200/" +
-                                      persons[index].profileImg),
-                              fit: BoxFit.cover),
-                        ),
-                      ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Text(persons[index].name,
-                    maxLines: 2,
-                    style: TextStyle(
-                      height: 1.4,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 9.0,
-                    )),
-                SizedBox(
-                  height: 3.0,
-                ),
-                Text("Trending for ${persons[index].known}",
-                    style: TextStyle(
-                      color: Style.Colors.titleColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 7.0,
-                    )),
-              ],
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(persons[index].name,
+                      maxLines: 2,
+                      style: TextStyle(
+                        height: 1.4,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 9.0,
+                      )),
+                  SizedBox(
+                    height: 3.0,
+                  ),
+                  Text("Trending for ${persons[index].known}",
+                      style: TextStyle(
+                        color: Style.Colors.titleColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 7.0,
+                      )),
+                ],
+              ),
             ),
           );
         },

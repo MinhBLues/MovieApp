@@ -3,6 +3,7 @@ import 'package:MovieApp/model/genre_response.dart';
 import 'package:MovieApp/model/movie_detail_response.dart';
 import 'package:MovieApp/model/movie_response.dart';
 import 'package:MovieApp/model/person/person_image_response.dart';
+import 'package:MovieApp/model/person_detail_responese.dart';
 import 'package:MovieApp/model/person_response.dart';
 import 'package:MovieApp/model/video_response.dart';
 import 'package:dio/dio.dart';
@@ -144,6 +145,18 @@ class MovieRepository {
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
       return PersonImageResponse.withError("$error");
+    }
+  }
+
+  Future<PersonDetailResponse> getPersonDetail(int id) async {
+    var params = {"api_key": apikey, "language": "en-US"};
+    try {
+      Response response =
+          await _dio.get(getPersonsUrl + "/$id", queryParameters: params);
+      return PersonDetailResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return PersonDetailResponse.withError("$error");
     }
   }
 }

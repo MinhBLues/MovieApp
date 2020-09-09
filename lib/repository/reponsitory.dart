@@ -2,6 +2,7 @@ import 'package:MovieApp/model/cast_response.dart';
 import 'package:MovieApp/model/genre_response.dart';
 import 'package:MovieApp/model/movie_detail_response.dart';
 import 'package:MovieApp/model/movie_response.dart';
+import 'package:MovieApp/model/person/person_external_response.dart';
 import 'package:MovieApp/model/person/person_image_response.dart';
 import 'package:MovieApp/model/person_detail_responese.dart';
 import 'package:MovieApp/model/person_response.dart';
@@ -157,6 +158,17 @@ class MovieRepository {
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
       return PersonDetailResponse.withError("$error");
+    }
+  }
+  Future<PersonExternalResponse> getPersonExternal(int id) async {
+    var params = {"api_key": apikey, "language": language};
+    try {
+      Response response =
+          await _dio.get(getPersonsUrl + "/$id/external_ids", queryParameters: params);
+      return PersonExternalResponse.fromJSON(response.data);
+    } catch (error, stacktrace) {
+      print("$error , $stacktrace");
+      return PersonExternalResponse.withError("$error");
     }
   }
 }

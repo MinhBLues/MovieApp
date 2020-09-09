@@ -1,6 +1,7 @@
 import 'package:MovieApp/bloc/get_person_image_bloc.dart';
 import 'package:MovieApp/model/person/person_image.dart';
 import 'package:MovieApp/model/person/person_image_response.dart';
+import 'package:MovieApp/widgets/external.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -120,34 +121,7 @@ class _PersonImageState extends State<PersonImageScreen> {
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       SizedBox(height: 345.0),
-                                      Container(
-                                        height: 50,
-                                        width: 60,
-                                        child: Center(
-                                          child: IconButton(
-                                              icon: Icon(
-                                                FontAwesomeIcons.facebookSquare,
-                                                size: 35,
-                                                color: facebook,
-                                              ),
-                                              onPressed: () => {print("ss")}),
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 50,
-                                        width: 60,
-                                        child: Center(
-                                          child: RadiantGradientMask(
-                                            child: IconButton(
-                                                icon: Icon(
-                                                  FontAwesomeIcons.instagram,
-                                                  size: 35,
-                                                  color: Colors.white,
-                                                ),
-                                                onPressed: () => {print("ss")}),
-                                          ),
-                                        ),
-                                      ),
+                                      External(id: id)
                                     ],
                                   ),
                                 ),
@@ -187,37 +161,6 @@ class _PersonImageState extends State<PersonImageScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class RadiantGradientMask extends StatelessWidget {
-  RadiantGradientMask({this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return RadialGradient(
-          center: Alignment.topLeft,
-          // radius: 0.5,
-          colors: <Color>[
-            gradientInsStartColor,
-            gradientInsFirstColor,
-            gradientInsSecondColor,
-            gradientInsThirdColor,
-            gradientInsFourthColor,
-            gradientInsFivethColor,
-            gradientInsSixthColor,
-            gradientInsSeventhColor,
-            gradientInsEightthColor,
-            gradientInsEndColor
-          ],
-          tileMode: TileMode.mirror,
-        ).createShader(bounds);
-      },
-      child: child,
     );
   }
 }

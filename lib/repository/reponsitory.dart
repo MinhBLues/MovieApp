@@ -160,11 +160,12 @@ class MovieRepository {
       return PersonDetailResponse.withError("$error");
     }
   }
+
   Future<PersonExternalResponse> getPersonExternal(int id) async {
     var params = {"api_key": apikey, "language": language};
     try {
-      Response response =
-          await _dio.get(getPersonsUrl + "/$id/external_ids", queryParameters: params);
+      Response response = await _dio.get(getPersonsUrl + "/${id}/external_ids",
+          queryParameters: params);
       return PersonExternalResponse.fromJSON(response.data);
     } catch (error, stacktrace) {
       print("$error , $stacktrace");
